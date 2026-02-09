@@ -15,7 +15,6 @@ A production-oriented bilingual (English/Persian) platform for invoice extractio
 [![License: AGPL-3.0](https://img.shields.io/badge/License-AGPL--3.0-blue?style=for-the-badge)](LICENSE)
 ![Release](https://img.shields.io/github/v/release/MahdiNavaei/InvoiceMind)
 </div>
-
 ---
 Latest stable release: **v0.3.0**
 
