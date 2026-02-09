@@ -14,6 +14,9 @@ A production-oriented bilingual (English/Persian) platform for invoice extractio
 [![TypeScript](https://img.shields.io/badge/TypeScript-Strict-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org)
 [![License: AGPL-3.0](https://img.shields.io/badge/License-AGPL--3.0-blue?style=for-the-badge)](LICENSE)
 
+
+Latest stable release: **v0.3.0**
+![Release](https://img.shields.io/github/v/release/MahdiNavaei/InvoiceMind)
 </div>
 
 ---
