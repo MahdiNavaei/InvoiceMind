@@ -4,7 +4,7 @@
 
 ### Local-LLM, Evidence-First, Audit-Ready Invoice Processing
 
-<img src="assets/readme/hero-cover.png" alt="InvoiceMind Hero Cover" width="960"/>
+<img src="assets/readme/hero-cover.jpg" alt="InvoiceMind Hero Cover" width="960"/>
 
 A production-oriented bilingual (English/Persian) platform for invoice extraction, human review, and governance-safe automation.
 
@@ -115,7 +115,7 @@ InvoiceMind takes inspiration from adjacent OSS ecosystems while focusing on fin
 
 ### 1) System Architecture
 
-<img src="assets/readme/system-architecture.png" alt="InvoiceMind System Architecture" width="100%"/>
+<img src="assets/readme/system-architecture.jpg" alt="InvoiceMind System Architecture" width="100%"/>
 
 Core flow:
 
@@ -129,7 +129,7 @@ Architecture highlights:
 
 ### 2) End-to-End Run Lifecycle
 
-<img src="assets/readme/run-lifecycle.png" alt="InvoiceMind Run Lifecycle" width="100%"/>
+<img src="assets/readme/run-lifecycle.jpg" alt="InvoiceMind Run Lifecycle" width="100%"/>
 
 Primary states:
 
@@ -139,7 +139,7 @@ Control points include cancel/replay and explicit escalation paths.
 
 ### 3) Review Workbench
 
-<img src="assets/readme/review-ui.png" alt="InvoiceMind Review UI" width="100%"/>
+<img src="assets/readme/review-ui.jpg" alt="InvoiceMind Review UI" width="100%"/>
 
 Review UX supports:
 
@@ -149,7 +149,7 @@ Review UX supports:
 
 ### 4) Quality Gates and Decisioning
 
-<img src="assets/readme/quality-gates.png" alt="Quality Gates and Decisioning" width="100%"/>
+<img src="assets/readme/quality-gates.jpg" alt="Quality Gates and Decisioning" width="100%"/>
 
 Gate categories include:
 
@@ -161,13 +161,13 @@ Gate categories include:
 
 ### 5) Quarantine and Data Quality
 
-<img src="assets/readme/quarantine-quality.png" alt="Quarantine and Data Quality" width="100%"/>
+<img src="assets/readme/quarantine-quality.jpg" alt="Quarantine and Data Quality" width="100%"/>
 
 Quarantine is reason-code-driven and reprocessable, so failures are contained rather than silently accepted.
 
 ### 6) Evaluation and Gold Set
 
-<img src="assets/readme/evaluation-goldset.png" alt="Evaluation and Gold Set" width="100%"/>
+<img src="assets/readme/evaluation-goldset.jpg" alt="Evaluation and Gold Set" width="100%"/>
 
 Evaluation outputs support field-level and document-level analysis, including tradeoffs between review pressure and critical error risk.
 
