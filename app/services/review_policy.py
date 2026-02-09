@@ -16,6 +16,23 @@ METRICS_PATH = ROOT / "Docs" / "Metrics_Definitions.yaml"
 _metrics_cache: dict[str, Any] | None = None
 _metrics_cache_mtime: float | None = None
 
+DEFAULT_METRICS_DEFINITIONS: dict[str, Any] = {
+    "version": "metrics-default-v1",
+    "fields": [
+        {"name": "invoice_number", "type": "string", "required": True, "critical": True, "weight": 1.0, "evidence_required": True},
+        {"name": "invoice_date", "type": "date", "required": True, "critical": True, "weight": 1.0, "evidence_required": True},
+        {"name": "vendor_name", "type": "string", "required": True, "critical": True, "weight": 1.0, "evidence_required": True},
+        {"name": "vendor_tax_id", "type": "string", "required": False, "critical": False, "weight": 0.5, "evidence_required": False},
+        {"name": "currency", "type": "string", "required": True, "critical": True, "weight": 1.0, "evidence_required": False},
+        {"name": "subtotal_amount", "type": "money", "required": True, "critical": False, "weight": 1.0, "evidence_required": False},
+        {"name": "tax_amount", "type": "money", "required": True, "critical": False, "weight": 1.0, "evidence_required": False},
+        {"name": "total_amount", "type": "money", "required": True, "critical": True, "weight": 1.2, "evidence_required": True},
+        {"name": "due_date", "type": "date", "required": False, "critical": False, "weight": 0.5, "evidence_required": False},
+        {"name": "payment_terms", "type": "string", "required": False, "critical": False, "weight": 0.4, "evidence_required": False},
+    ],
+    "document_level": {"evidence_coverage_threshold": 0.9},
+}
+
 FIELD_NAME_MAP = {
     "invoice_number": "invoice_no",
     "invoice_date": "invoice_date",
@@ -39,13 +56,15 @@ def load_metrics_definitions() -> dict[str, Any]:
         return _metrics_cache
 
     if not METRICS_PATH.exists():
-        _metrics_cache = {"version": "metrics-missing", "fields": [], "document_level": {}}
+        # Keep policy/evaluation operational even when Docs-only artifacts are trimmed.
+        _metrics_cache = DEFAULT_METRICS_DEFINITIONS
         _metrics_cache_mtime = mtime
         return _metrics_cache
 
     loaded = yaml.safe_load(METRICS_PATH.read_text(encoding="utf-8")) or {}
-    loaded.setdefault("fields", [])
-    loaded.setdefault("document_level", {})
+    loaded.setdefault("version", DEFAULT_METRICS_DEFINITIONS["version"])
+    loaded.setdefault("fields", DEFAULT_METRICS_DEFINITIONS["fields"])
+    loaded.setdefault("document_level", DEFAULT_METRICS_DEFINITIONS["document_level"])
     _metrics_cache = loaded
     _metrics_cache_mtime = mtime
     return loaded
