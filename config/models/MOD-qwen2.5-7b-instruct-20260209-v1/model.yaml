@@ -1,0 +1,8 @@
+model_version: MOD-qwen2.5-7b-instruct-20260209-v1
+model_name: qwen2.5-7b-instruct
+runtime: local
+quantization: q4
+decoding:
+  temperature: 0.1
+  top_p: 0.9
+  seed: 42

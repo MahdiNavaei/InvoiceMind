@@ -1,0 +1,121 @@
+openapi: 3.0.3
+info:
+  title: InvoiceMind API
+  version: 0.2.0
+  description: Expanded API contract for local-first InvoiceMind backend.
+paths:
+  /health:
+    get:
+      summary: Health check
+      responses:
+        "200":
+          description: Service healthy
+  /ready:
+    get:
+      summary: Readiness check
+      responses:
+        "200":
+          description: Service ready
+  /metrics:
+    get:
+      summary: Runtime metrics snapshot
+      responses:
+        "200":
+          description: Metrics payload
+  /v1/auth/token:
+    post:
+      summary: Login and issue JWT token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [username, password]
+              properties:
+                username: { type: string }
+                password: { type: string }
+      responses:
+        "200":
+          description: Token response
+  /v1/documents:
+    post:
+      summary: Upload raw document bytes
+      parameters:
+        - in: header
+          name: X-Filename
+          required: true
+          schema: { type: string }
+        - in: header
+          name: X-Content-Type
+          required: false
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/octet-stream:
+            schema:
+              type: string
+              format: binary
+      responses:
+        "200":
+          description: Document response
+  /v1/documents/{document_id}:
+    get:
+      summary: Fetch document metadata
+      parameters:
+        - in: path
+          name: document_id
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Document details
+  /v1/documents/{document_id}/runs:
+    post:
+      summary: Create run for document
+      parameters:
+        - in: path
+          name: document_id
+          required: true
+          schema: { type: string }
+        - in: header
+          name: Idempotency-Key
+          required: false
+          schema: { type: string }
+      responses:
+        "200":
+          description: Run created
+  /v1/runs/{run_id}:
+    get:
+      summary: Get run lifecycle state and outputs
+      parameters:
+        - in: path
+          name: run_id
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Run details
+  /v1/runs/{run_id}/cancel:
+    post:
+      summary: Cancel queued/running run
+      parameters:
+        - in: path
+          name: run_id
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Cancellation state
+  /v1/runs/{run_id}/replay:
+    post:
+      summary: Replay a previous run
+      parameters:
+        - in: path
+          name: run_id
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Replay run created

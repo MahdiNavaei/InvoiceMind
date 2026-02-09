@@ -1,0 +1,215 @@
+{
+  "generated_at_utc": "2026-02-09T12:09:39.029947+00:00",
+  "goldset_version": "GS-20260209-v1",
+  "evaluation": {
+    "dataset_size": 6,
+    "field_metrics": {
+      "invoice_number": {
+        "accuracy": 0.833333,
+        "weighted_accuracy": 0.833333,
+        "evidence_coverage": 0.666667
+      },
+      "invoice_date": {
+        "accuracy": 1.0,
+        "weighted_accuracy": 1.0,
+        "evidence_coverage": 0.833333
+      },
+      "vendor_name": {
+        "accuracy": 1.0,
+        "weighted_accuracy": 1.0,
+        "evidence_coverage": 1.0
+      },
+      "vendor_tax_id": {
+        "accuracy": 1.0,
+        "weighted_accuracy": 1.0,
+        "evidence_coverage": 0.0
+      },
+      "currency": {
+        "accuracy": 1.0,
+        "weighted_accuracy": 1.0,
+        "evidence_coverage": 0.0
+      },
+      "subtotal_amount": {
+        "accuracy": 1.0,
+        "weighted_accuracy": 1.0,
+        "evidence_coverage": 0.0
+      },
+      "tax_amount": {
+        "accuracy": 0.833333,
+        "weighted_accuracy": 0.833333,
+        "evidence_coverage": 0.0
+      },
+      "total_amount": {
+        "accuracy": 0.833333,
+        "weighted_accuracy": 0.833333,
+        "evidence_coverage": 0.666667
+      },
+      "due_date": {
+        "accuracy": 1.0,
+        "weighted_accuracy": 1.0,
+        "evidence_coverage": 0.0
+      },
+      "payment_terms": {
+        "accuracy": 1.0,
+        "weighted_accuracy": 1.0,
+        "evidence_coverage": 0.0
+      }
+    },
+    "document_metrics": {
+      "doc_pass_rate": 0.5,
+      "review_ratio": 0.5,
+      "critical_false_accept_rate": 0.0,
+      "doc_critical_error_rate": 0.0
+    },
+    "confusion_matrix": {
+      "tp": 3,
+      "tn": 3,
+      "fp": 0,
+      "fn": 0
+    },
+    "stratification": {
+      "HIGH": {
+        "count": 2,
+        "auto_approved": 1,
+        "needs_review": 1
+      },
+      "MEDIUM": {
+        "count": 2,
+        "auto_approved": 2,
+        "needs_review": 0
+      },
+      "LOW": {
+        "count": 2,
+        "auto_approved": 0,
+        "needs_review": 2
+      }
+    },
+    "records": [
+      {
+        "doc_id": "GS-B-001",
+        "quality_tier": "HIGH",
+        "required_ok": true,
+        "critical_ok": true,
+        "evidence_coverage": 1.0,
+        "hard_consistency_ok": true,
+        "expected_decision": "AUTO_APPROVED",
+        "predicted_decision": "AUTO_APPROVED"
+      },
+      {
+        "doc_id": "GS-B-002",
+        "quality_tier": "MEDIUM",
+        "required_ok": true,
+        "critical_ok": true,
+        "evidence_coverage": 1.0,
+        "hard_consistency_ok": true,
+        "expected_decision": "AUTO_APPROVED",
+        "predicted_decision": "AUTO_APPROVED"
+      },
+      {
+        "doc_id": "GS-B-003",
+        "quality_tier": "LOW",
+        "required_ok": false,
+        "critical_ok": false,
+        "evidence_coverage": 0.75,
+        "hard_consistency_ok": true,
+        "expected_decision": "NEEDS_REVIEW",
+        "predicted_decision": "NEEDS_REVIEW"
+      },
+      {
+        "doc_id": "GS-B-004",
+        "quality_tier": "HIGH",
+        "required_ok": false,
+        "critical_ok": false,
+        "evidence_coverage": 0.75,
+        "hard_consistency_ok": true,
+        "expected_decision": "NEEDS_REVIEW",
+        "predicted_decision": "NEEDS_REVIEW"
+      },
+      {
+        "doc_id": "GS-B-005",
+        "quality_tier": "MEDIUM",
+        "required_ok": true,
+        "critical_ok": true,
+        "evidence_coverage": 1.0,
+        "hard_consistency_ok": true,
+        "expected_decision": "AUTO_APPROVED",
+        "predicted_decision": "AUTO_APPROVED"
+      },
+      {
+        "doc_id": "GS-B-006",
+        "quality_tier": "LOW",
+        "required_ok": true,
+        "critical_ok": true,
+        "evidence_coverage": 0.25,
+        "hard_consistency_ok": true,
+        "expected_decision": "NEEDS_REVIEW",
+        "predicted_decision": "NEEDS_REVIEW"
+      }
+    ]
+  },
+  "calibration": {
+    "raw": {
+      "ece": 0.31166666666666665,
+      "brier": 0.15291666666666665
+    },
+    "isotonic": {
+      "ece": 0.0,
+      "brier": 0.0,
+      "breakpoints": [
+        [
+          0.35,
+          0.0
+        ],
+        [
+          0.41,
+          0.0
+        ],
+        [
+          0.76,
+          0.0
+        ],
+        [
+          0.82,
+          1.0
+        ],
+        [
+          0.88,
+          1.0
+        ],
+        [
+          0.95,
+          1.0
+        ]
+      ]
+    },
+    "platt": {
+      "ece": 0.3645794627313764,
+      "brier": 0.14285159696370037,
+      "params": {
+        "a": 3.0373292786985058,
+        "b": -2.0049336846554886
+      }
+    }
+  },
+  "threshold_selection": {
+    "threshold": 0.05,
+    "review_ratio": 0.5,
+    "critical_false_accept_rate": 0.0
+  },
+  "labelops": {
+    "iaa": {
+      "overall_agreement": 0.6,
+      "field_agreement": {
+        "invoice_no": 0.5,
+        "total": 1.0,
+        "tax": 0.0
+      },
+      "sample_size": 5
+    },
+    "benchmark_contamination": {
+      "contaminated": false,
+      "overlap_count": 0,
+      "overlap_doc_ids": []
+    }
+  }
+}

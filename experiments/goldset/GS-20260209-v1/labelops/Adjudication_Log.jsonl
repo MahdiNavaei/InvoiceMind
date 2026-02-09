@@ -1,0 +1,5 @@
+{"doc_id":"GS-B-001","field":"invoice_no","annotator_a":"INV-1001","annotator_b":"INV-1001","final":"INV-1001"}
+{"doc_id":"GS-B-001","field":"total","annotator_a":"108.0","annotator_b":"108.0","final":"108.0"}
+{"doc_id":"GS-B-003","field":"tax","annotator_a":"24.8","annotator_b":"20.0","final":"24.8"}
+{"doc_id":"GS-B-004","field":"invoice_no","annotator_a":"","annotator_b":"INV-1004","final":"INV-1004"}
+{"doc_id":"GS-B-006","field":"total","annotator_a":"59.4","annotator_b":"59.4","final":"59.4"}

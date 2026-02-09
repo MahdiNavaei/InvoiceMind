@@ -1,0 +1,9 @@
+{
+  "label_config": "<View>
+  <Image name=\"image\" value=\"$image\" />
+  <Header value=\"Invoice Fields\" />
+  <TextArea name=\"notes\" toName=\"image\" />
+</View>",
+  "project": "InvoiceMind Annotation",
+  "params": {}
+}

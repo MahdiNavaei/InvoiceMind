@@ -1,0 +1,13 @@
+name: InvoiceMind routing profile
+version: RTE-20260209-v1
+gates:
+  - required_fields
+  - critical_fields
+  - evidence_coverage
+  - consistency
+  - low_quality_escalation
+thresholds:
+  low_confidence: 0.6
+  low_ocr_confidence: 0.55
+  required_field_coverage: 0.8
+  evidence_coverage: 0.9

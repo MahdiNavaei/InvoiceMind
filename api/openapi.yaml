@@ -1,0 +1,114 @@
+openapi: 3.0.3
+info:
+  title: InvoiceMind Local Inference API
+  version: "0.2"
+  description: Local-first API for document upload, run orchestration, replay and bilingual responses.
+servers:
+  - url: http://localhost:8000
+paths:
+  /health:
+    get:
+      summary: Health check
+      responses:
+        "200":
+          description: OK
+  /ready:
+    get:
+      summary: Readiness check
+      responses:
+        "200":
+          description: Ready
+  /v1/auth/token:
+    post:
+      summary: Issue access token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        "200":
+          description: Token issued
+  /v1/documents:
+    post:
+      summary: Upload document payload (raw bytes)
+      parameters:
+        - name: X-Filename
+          in: header
+          required: true
+          schema:
+            type: string
+        - name: X-Content-Type
+          in: header
+          required: false
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/octet-stream:
+            schema:
+              type: string
+              format: binary
+      responses:
+        "200":
+          description: Document created
+  /v1/documents/{document_id}/runs:
+    post:
+      summary: Create run for document
+      parameters:
+        - name: document_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: Idempotency-Key
+          in: header
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Run created
+  /v1/runs/{run_id}:
+    get:
+      summary: Get run details
+      parameters:
+        - name: run_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Run details
+  /v1/runs/{run_id}/cancel:
+    post:
+      summary: Cancel run
+      parameters:
+        - name: run_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Cancellation accepted
+  /v1/runs/{run_id}/replay:
+    post:
+      summary: Replay a run
+      parameters:
+        - name: run_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Replay run created

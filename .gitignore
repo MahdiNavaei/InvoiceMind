@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+venv/
+*.log
+
+# Runtime artifacts
+*.db
+*.sqlite
+*.sqlite3
+test_storage/
+e2e_storage/
+e2e_full_storage/
+perf_storage/
+app/storage/
+
+# Frontend
+frontend/node_modules/
+frontend/.next/
+frontend/.turbo/
+frontend/coverage/
+frontend/.env.local
+frontend/tsconfig.tsbuildinfo
+frontend/.vercel/
+
+# External cloned research repos
+external/
+
+# Local env files
+.env
+.env.local
+.env.*.local
+
+# Keep Docs minimal for public repo
+Docs/*
+!Docs/README.md

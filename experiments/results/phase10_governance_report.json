@@ -1,0 +1,92 @@
+{
+  "generated_at_utc": "2026-02-09T12:09:39.493537+00:00",
+  "runtime_versions": {
+    "versions": {
+      "prompt_version": "PRM-20260209-v1",
+      "template_version": "TPL-20260209-v1",
+      "routing_version": "RTE-20260209-v1",
+      "policy_version": "POL-20260209-v1",
+      "model_version": "MOD-qwen2.5-7b-instruct-20260209-v1"
+    },
+    "artifact_hashes": {
+      "prompt_version": "7f7e18b82ef7d7ef96b7b0a44df40ab161c4650ab70367fe6cc497bb7060b20e",
+      "template_version": "fb080b1867a765440c65ef785b551fe300717323b903d9cbba979a6936f3c982",
+      "routing_version": "e9ed13b85f8823bb188e9bdc6cb9fcf2a4a31e6ff79aeaebe8eefe21203834b3",
+      "policy_version": "d8c65ddaef549b623cc7d046342133db8f5f6673ab306d9dbb94ae0e02ea8bc2",
+      "model_version": "086d80115b9d042f3bb77fae05da6bfaf32c5309946f079e9bc42dae6b40a594"
+    },
+    "runtime": {
+      "model_runtime": "local",
+      "model_quantization": "q4",
+      "decoding_temperature": 0.1,
+      "decoding_top_p": 0.9
+    }
+  },
+  "audit_chain": {
+    "valid": true,
+    "events_checked": 9,
+    "head_hash": "3433f4b0513f9f45f93b4ed442072b735b38278b9aeea2053c2f2ed627ac1bda"
+  },
+  "release_gate": {
+    "passed": true,
+    "checks": {
+      "doc_pass_rate_guard": true,
+      "critical_error_guard": true,
+      "critical_false_accept_guard": true
+    },
+    "tolerance": {
+      "doc_pass_rate_drop": 0.005,
+      "critical_error_rate_increase": 0.002,
+      "critical_false_accept_ceiling": 0.001
+    }
+  },
+  "capacity": {
+    "capacity_system_docs_per_sec": 1.5384615384615383,
+    "recommended_peak_lambda": 0.7692307692307692,
+    "stage_capacities": [
+      {
+        "stage": "ingestion",
+        "service_time_ms": 35.0,
+        "concurrency": 8.0,
+        "capacity_docs_per_sec": 228.57142857142856
+      },
+      {
+        "stage": "ocr",
+        "service_time_ms": 480.0,
+        "concurrency": 2.0,
+        "capacity_docs_per_sec": 4.166666666666667
+      },
+      {
+        "stage": "extract",
+        "service_time_ms": 650.0,
+        "concurrency": 1.0,
+        "capacity_docs_per_sec": 1.5384615384615383
+      },
+      {
+        "stage": "postprocess",
+        "service_time_ms": 80.0,
+        "concurrency": 4.0,
+        "capacity_docs_per_sec": 50.0
+      }
+    ]
+  },
+  "cost": {
+    "infra_cost_per_doc": 0.00575,
+    "storage_cost_per_doc": 0.003,
+    "review_cost_per_doc": 0.09100000000000001,
+    "cost_per_doc": 0.09975
+  },
+  "canary_rollout_plan": {
+    "steps": [
+      "1%",
+      "5%",
+      "25%",
+      "100%"
+    ],
+    "rollback_triggers": [
+      "critical_false_accept_guard=false",
+      "p95 latency breach sustained",
+      "pipeline_exception spike"
+    ]
+  }
+}

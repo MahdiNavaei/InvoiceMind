@@ -1,0 +1,106 @@
+---
+# Machine-readable index of local models (generated)
+# fields: name, file, role, format, vram_estimate
+models:
+  - name: qwen2.5-7b-instruct
+    file: qwen2.5-7b-instruct-q4_k_m.gguf
+    role: small-instruct (schema extraction / validation)
+    format: gguf Q4_K_M
+    vram_estimate: 6-8GB
+
+  - name: qwen3-7b-instruct
+    file: qwen3-7b-instruct-q4_k_m.gguf
+    role: small-instruct (alternative)
+    format: gguf Q4_K_M
+    vram_estimate: 6-8GB
+
+  - name: dorna-llama3-8b-instruct
+    file: dorna-llama3-8b-instruct.Q4_K_M.gguf
+    role: instruct (heavy / on-demand)
+    format: gguf Q4_K_M
+    vram_estimate: 7-9GB (test on device)
+
+  - name: Dorna2-Llama3.1-8B-Instruct
+    file: |
+      Dorna2-Llama3.1-8B-Instruct-model-00001-of-00005.safetensors
+      Dorna2-Llama3.1-8B-Instruct-model-00002-of-00005.safetensors
+      Dorna2-Llama3.1-8B-Instruct-model-00003-of-00005.safetensors
+      Dorna2-Llama3.1-8B-Instruct-model-00004-of-00005.safetensors
+      Dorna2-Llama3.1-8B-Instruct-model-00005-of-00005.safetensors
+    role: heavy-sharded (offline / finetune)
+    format: safetensors (multi-shard)
+    vram_estimate: >16GB (not suitable for RTX2060S)
+
+  - name: aya-expanse-8b
+    file: |
+      aya-expanse-8b-model-00001-of-00004.safetensors
+      aya-expanse-8b-model-00002-of-00004.safetensors
+      aya-expanse-8b-model-00003-of-00004.safetensors
+      aya-expanse-8b-model-00004-of-00004.safetensors
+    role: heavy-sharded (research / batch)
+    format: safetensors (multi-shard)
+    vram_estimate: >16GB
+
+  - name: gemma-3-4b-persian
+    file: |
+      gemma-3-4b-persian-v0-model-00001-of-00004.safetensors
+      gemma-3-4b-persian-v0-model-00002-of-00004.safetensors
+      gemma-3-4b-persian-v0-model-00003-of-00004_2.safetensors
+      gemma-3-4b-persian-v0-model-00004-of-00004.safetensors
+      gemma-3-4b-persian-v0-abliterated-q8_0.gguf
+    role: persian-specialized (post-process, generation)
+    format: safetensors / gguf
+    vram_estimate: 4-6GB (quant recommended)
+
+  - name: PersiandMind-PersianMind-v1.0
+    file: PersianMind-v1.0.Q5_K_M.gguf
+    role: persian-specialized (normalization / generation)
+    format: gguf Q5
+    vram_estimate: 3-6GB
+
+  - name: Tooka-SBERT
+    file: |
+      Tooka-SBERT.safetensors
+      Tooka-SBERT-V2-Large.safetensors
+    role: embeddings
+    format: safetensors
+    vram_estimate: 0.5-2GB (CPU friendly)
+
+  - name: whisper-persian-v4
+    file: |
+      "whisper-persian-v4 -model-00001-of-00002.safetensors"
+      "whisper-persian-v4 -model-00002-of-00002.safetensors"
+      whisper-persian-v4 -model.safetensors.index.json
+    role: asr (Persian)
+    format: safetensors
+    vram_estimate: 2-6GB (depending on model size)
+
+  - name: deepseek-ocr-persian
+    file: |
+      DeepSeek-OCR-2 .safetensors
+      deepseek-ocr-persian.safetensors.index.json
+      deepseek-ocr-persian.safetensors
+    role: OCR (printed Persian)
+    format: safetensors
+    vram_estimate: 2-4GB
+
+  - name: qwen3-vl-4b
+    file: |
+      Qwen3-VL-4B-Thinking-mmproj-Qwen3VL-4B-Thinking-F16.gguf
+      Qwen3-VL-4B-Thinking-Qwen3VL-4B-Thinking-Q4_K_M.gguf
+    role: vision-LM (experimental OCR-free extraction)
+    format: gguf Q4 / F16
+    vram_estimate: 6-8GB
+
+  - name: qwen3-coder-next-awq-shards
+    file: Qwen3-Coder-Next-AWQ-4bit-model-00001-of-00010.safetensors
+    role: coder (code/sql generation)
+    format: AWQ 4-bit shards
+    vram_estimate: 4-8GB (depends on loader)
+
+  - name: hemlock-coder-7b
+    file: Hemlock-Coder-7B.i1-Q4_K_M.gguf
+    role: coder (code/sql generation)
+    format: gguf Q4
+    vram_estimate: 4-6GB
+

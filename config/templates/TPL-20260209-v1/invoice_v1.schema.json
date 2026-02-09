@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "InvoiceMind invoice_v1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "vendor_name",
+    "invoice_no",
+    "invoice_date",
+    "total",
+    "currency"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string"
+    },
+    "vendor_name": {
+      "type": "string"
+    },
+    "invoice_no": {
+      "type": "string"
+    },
+    "invoice_date": {
+      "type": "string"
+    },
+    "subtotal": {
+      "type": "number"
+    },
+    "tax": {
+      "type": "number"
+    },
+    "total": {
+      "type": "number"
+    },
+    "currency": {
+      "type": "string"
+    },
+    "evidence": {
+      "type": "array"
+    },
+    "field_evidence": {
+      "type": "object"
+    }
+  }
+}
