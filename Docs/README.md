@@ -1,200 +1,130 @@
 # InvoiceMind Documentation
 
-> Local-LLM, Evidence-first, Audit-ready Invoice Processing
+This document is the single technical documentation entry point for the `InvoiceMind` repository.
 
-این فایل تنها مرجع مستندات پروژه `InvoiceMind` است و جایگزین تمام گزارش‌های قبلی داخل پوشه `Docs` شده است.
+## 1) Project Summary
 
-## 1) معرفی پروژه
+`InvoiceMind` is a bilingual invoice intelligence platform designed for local-first processing.
+It covers the full lifecycle of invoice handling:
 
-`InvoiceMind` یک سامانه پردازش هوشمند فاکتور با معماری Local-First است که کل مسیر پردازش سند را از ورودی تا خروجی قابل ممیزی پوشش می‌دهد:
+- ingestion
+- quality validation
+- extraction
+- policy-based routing
+- human review and correction
+- export and audit traceability
 
-- دریافت سند (PDF / Image / XLSX)
-- اعتبارسنجی قرارداد کیفیت داده
-- استخراج ساختاریافته
-- تصمیم‌گیری خودکار یا ارجاع به بازبینی انسانی
-- ثبت رویدادها در زنجیره Audit
-- خروجی استاندارد برای مصرف در سیستم‌های مالی
+Core design principles:
 
-این پروژه دو‌زبانه (فارسی/انگلیسی) است و UI در هر دو زبان قابل استفاده است.
+- **Local-first runtime** for privacy and cost control
+- **Evidence-first decisions** for defensibility
+- **Audit-ready operations** through immutable audit events
+- **Operational clarity** with explicit quarantine and reprocess paths
 
-## 2) اهداف فنی
+## 2) System Topology
 
-- اجرای کامل محلی (بدون وابستگی اجباری به API بیرونی)
-- کیفیت قابل دفاع با quality gates و reason codes
-- قابلیت رهگیری با audit trail
-- مقیاس‌پذیری مرحله‌ای با worker/background mode
-- تجربه کاربری عملیاتی برای تیم Review
+### Backend (`app/`)
 
-## 3) معماری کلان
+- FastAPI service with versioned routes under `/v1`
+- SQLAlchemy persistence layer
+- Orchestrator-driven run lifecycle
+- Governance and audit endpoints
+
+### Frontend (`frontend/`)
+
+- Next.js App Router application
+- English/Persian interface (`/en/*`, `/fa/*`)
+- Queue-based operations for runs and quarantine
+- Governance-focused pages for runtime and audit visibility
+
+### Config Bundles (`config/`)
+
+Versioned runtime artifacts:
+
+- `prompts/`
+- `templates/`
+- `routing/`
+- `policies/`
+- `models/`
+- `active_versions.yaml`
+
+These define the active extraction and decisioning behavior without changing core service code.
+
+## 3) Runtime Data and Storage
+
+Default storage root:
+
+- `INVOICEMIND_STORAGE_ROOT=app/storage`
+
+Subdirectories:
+
+- `app/storage/raw` for uploaded document bytes
+- `app/storage/runs` for run outputs and intermediate artifacts
+- `app/storage/quarantine` for quarantined payloads and metadata
+- `app/storage/audit` for audit event logs
+
+Operational note:
+
+- storage artifacts are runtime outputs and should not be committed to Git.
+
+## 4) Environment Configuration
 
 ### Backend
 
-- Framework: `FastAPI`
-- DB: `SQLite` (قابل ارتقا)
-- ORM/Migrations: `SQLAlchemy` + `Alembic`
-- لایه‌ها:
-  - API Routers
-  - Services (extraction, policy, governance, change-management)
-  - Orchestrator برای مدیریت چرخه Run
-  - Storage (raw/runs/audit/quarantine)
-
-### Frontend
-
-- Framework: `Next.js` (App Router) + `React` + `TypeScript`
-- مسیرهای عملیاتی:
-  - داشبورد
-  - آپلود
-  - Runs
-  - Quarantine
-  - Governance
-  - Settings
-- پشتیبانی همزمان `fa` و `en` با RTL/LTR
-
-### مسیر پردازش
-
-`Ingestion -> Validation -> Extraction -> Gating -> (Auto-Approve | Needs-Review) -> Finalize/Export`
-
-## 4) ساختار پروژه
-
-```text
-InvoiceMind/
-├─ app/                       # هسته بک‌اند
-│  ├─ routers/                # API endpoints
-│  ├─ services/               # business logic
-│  ├─ orchestrator.py         # run lifecycle orchestration
-│  ├─ models.py               # دیتامدل
-│  ├─ config.py               # تنظیمات runtime
-│  └─ main.py                 # entrypoint
-├─ frontend/                  # رابط کاربری Next.js
-├─ config/                    # نسخه‌های فعال prompt/template/policy/routing/model
-├─ scripts/                   # ابزارهای اجرایی (مثل migrate)
-├─ tests/                     # تست‌های backend
-├─ tools/                     # ابزارهای eval/perf
-├─ models.yaml                # کاتالوگ مدل‌های لوکال
-├─ run.bat                    # اجرای همزمان فرانت و بک روی ویندوز
-├─ .env.example               # نمونه env بک‌اند
-└─ frontend/.env.local.example # نمونه env فرانت
-```
-
-## 5) پیش‌نیازها
-
-- Python `3.11+`
-- Node.js `22+`
-- npm
-- (اختیاری) Ollama برای اجرای مدل‌های GGUF
-
-## 6) راه‌اندازی سریع
-
-### روش یک‌کلیکی (ویندوز)
-
-در ریشه پروژه:
-
-```bat
-run.bat
-```
-
-این فایل:
-- migration را اجرا می‌کند
-- backend را روی `http://127.0.0.1:8000` بالا می‌آورد
-- frontend را روی `http://127.0.0.1:3000` بالا می‌آورد
-
-### روش دستی
-
-#### Backend
-
-```powershell
-python -m pip install --upgrade pip
-python -m pip install -r requirements.txt
-python scripts/migrate.py
-python -m uvicorn app.main:app --host 127.0.0.1 --port 8000
-```
-
-#### Frontend
-
-```powershell
-cd frontend
-npm install
-npm run dev -- --hostname 127.0.0.1 --port 3000
-```
-
-## 7) تنظیمات محیطی (Environment)
-
-### بک‌اند
-
-از فایل نمونه کپی بگیرید:
+Start from `.env.example`:
 
 ```powershell
 Copy-Item .env.example .env
 ```
 
-متغیرهای مهم:
+Critical environment variables:
 
-- `INVOICEMIND_DB_URL`: مسیر دیتابیس
-- `INVOICEMIND_STORAGE_ROOT`: مسیر ذخیره‌سازی artifacts
-- `INVOICEMIND_EXECUTION_MODE`: `background | worker | hybrid`
-- `INVOICEMIND_LOW_CONFIDENCE_THRESHOLD`
-- `INVOICEMIND_REQUIRED_FIELD_COVERAGE_THRESHOLD`
-- `INVOICEMIND_EVIDENCE_COVERAGE_THRESHOLD`
-- `INVOICEMIND_PROMPT_VERSION`
-- `INVOICEMIND_TEMPLATE_VERSION`
-- `INVOICEMIND_ROUTING_VERSION`
-- `INVOICEMIND_POLICY_VERSION`
-- `INVOICEMIND_MODEL_VERSION`
-- `INVOICEMIND_MODEL_RUNTIME` (پیشنهادی: `local`)
-- `INVOICEMIND_MODEL_QUANTIZATION`
+- application/runtime: `INVOICEMIND_ENV`, `INVOICEMIND_EXECUTION_MODE`
+- persistence: `INVOICEMIND_DB_URL`, `INVOICEMIND_STORAGE_ROOT`
+- quality gates: confidence and coverage thresholds
+- governance versions: prompt/template/routing/policy/model versions
+- security: JWT secret and token policy
 
-### فرانت‌اند
+### Frontend
 
-از فایل نمونه کپی بگیرید:
+Start from `frontend/.env.local.example`:
 
 ```powershell
 Copy-Item frontend/.env.local.example frontend/.env.local
 ```
 
-متغیرهای مهم:
+Required values:
 
-- `INVOICEMIND_API_BASE_URL` (مثال: `http://localhost:8000`)
+- `INVOICEMIND_API_BASE_URL`
 - `INVOICEMIND_API_USERNAME`
 - `INVOICEMIND_API_PASSWORD`
 
-## 8) راهنمای مدل‌های Local LLM
+## 5) Local LLM and Model Management
 
-### اصل مهم
-
-این پروژه برای Local Inference طراحی شده و نیاز به API خارجی ندارد.
-
-### محل تعریف و مدیریت مدل‌ها
+Model metadata is tracked in:
 
 - `models.yaml`
-  - فهرست مدل‌ها، نقش هر مدل، فرمت و برآورد مصرف VRAM
+
+Runtime versioning is tracked in:
+
 - `config/active_versions.yaml`
-  - نگهداری نسخه فعال runtime برای policy/template/model/routing
 - `config/models/<MODEL_VERSION>/model.yaml`
-  - متادیتای نسخه مدل فعال
 
-### محل فایل وزن مدل‌ها (weights)
+Recommended operational pattern:
 
-پیشنهاد عملی:
-- در سیستم محلی یک مسیر ثابت برای weights داشته باشید (مثلا `D:\LLMModels`)
-- این فایل‌ها را داخل ریپازیتوری قرار ندهید
-- فقط متادیتا/نام مدل در `models.yaml` و تنظیمات env نگهداری شود
+1. Keep model metadata in Git.
+2. Keep large model weight files outside Git.
+3. Pin model/runtime versions in environment variables.
+4. Update policy/routing/template versions together when behavior changes.
 
-### اجرای مدل‌های GGUF با Ollama (اختیاری)
-
-نمونه جریان کار:
+Optional GGUF runtime example:
 
 ```powershell
-ollama import <path_to_gguf_file> --name invoicemind-extractor
+ollama import <path-to-gguf> --name invoicemind-extractor
 ollama run invoicemind-extractor --prompt "extract invoice fields"
 ```
 
-### انتخاب مدل در runtime
-
-- `INVOICEMIND_MODEL_VERSION` باید با نسخه‌های تعریف‌شده در `config/models` هم‌راستا باشد
-- `INVOICEMIND_MODEL_RUNTIME=local`
-- `INVOICEMIND_MODEL_QUANTIZATION` مطابق سخت‌افزار (مثلا `q4`)
-
-## 9) APIهای اصلی بک‌اند
+## 6) API Overview
 
 ### Health
 
@@ -202,17 +132,14 @@ ollama run invoicemind-extractor --prompt "extract invoice fields"
 - `GET /ready`
 - `GET /metrics`
 
-### Auth
+### Authentication
 
 - `POST /v1/auth/token`
 
-### Documents
+### Document and Run Processing
 
 - `POST /v1/documents`
 - `GET /v1/documents/{document_id}`
-
-### Runs
-
 - `POST /v1/documents/{document_id}/runs`
 - `GET /v1/runs/{run_id}`
 - `POST /v1/runs/{run_id}/cancel`
@@ -225,7 +152,7 @@ ollama run invoicemind-extractor --prompt "extract invoice fields"
 - `GET /v1/quarantine/{item_id}`
 - `POST /v1/quarantine/{item_id}/reprocess`
 
-### Governance / Audit
+### Governance and Audit
 
 - `GET /v1/audit/verify`
 - `GET /v1/audit/events`
@@ -233,40 +160,42 @@ ollama run invoicemind-extractor --prompt "extract invoice fields"
 - `POST /v1/governance/change-risk`
 - `POST /v1/governance/capacity-estimate`
 
-## 10) مسیرهای UI
+## 7) Local Development Workflow
 
-پس از اجرای فرانت:
+### One-click (Windows)
 
-- Landing: `http://127.0.0.1:3000`
-- English Dashboard: `http://127.0.0.1:3000/en/dashboard`
-- Persian Dashboard: `http://127.0.0.1:3000/fa/dashboard`
-- Upload: `/{lang}/upload`
-- Runs: `/{lang}/runs`
-- Quarantine: `/{lang}/quarantine`
-- Governance: `/{lang}/governance`
-- Settings: `/{lang}/settings`
+```bat
+run.bat
+```
 
-## 11) مسیرهای داده و Artifact
+### Manual
 
-طبق تنظیم پیش‌فرض `INVOICEMIND_STORAGE_ROOT=app/storage`:
+Backend:
 
-- `app/storage/raw` فایل خام ورودی
-- `app/storage/runs` خروجی‌ها و artifactهای پردازش
-- `app/storage/quarantine` اسناد quarantine شده
-- `app/storage/audit` رویدادهای audit
+```powershell
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
+python scripts/migrate.py
+python -m uvicorn app.main:app --host 127.0.0.1 --port 8000
+```
 
-نکته:
-- این پوشه‌ها runtime artifact هستند و نباید وارد push ریپازیتوری شوند.
+Frontend:
 
-## 12) تست و کنترل کیفیت
+```powershell
+cd frontend
+npm install
+npm run dev -- --hostname 127.0.0.1 --port 3000
+```
 
-### Backend
+## 8) Testing and Release Readiness
+
+Backend tests:
 
 ```powershell
 pytest
 ```
 
-### Frontend
+Frontend checks:
 
 ```powershell
 cd frontend
@@ -275,62 +204,22 @@ npm run test
 npm run build
 ```
 
-### چک نهایی پیش از انتشار
+Suggested pre-release checks:
 
-- backend up و health endpoints سبز
-- frontend build بدون خطا
-- مسیرهای `/fa/*` و `/en/*` در دسترس
-- upload -> run -> review/quarantine -> export قابل انجام
-- `GET /v1/audit/verify` وضعیت معتبر برگرداند
+- service health and readiness endpoints respond correctly
+- upload-to-export workflow succeeds in both `/en` and `/fa` routes
+- quarantine and reprocess operations work end-to-end
+- audit chain verification returns valid status
+- frontend production build completes without errors
 
-## 13) راهنمای انتشار روی GitHub
+## 9) Security and Compliance Notes
 
-### فایل‌هایی که باید Push شوند
+- Follow `SECURITY.md` for vulnerability reporting.
+- Use non-default JWT secret in staging/production.
+- Never commit real environment files or sensitive production credentials.
+- Use synthetic data for screenshots and demonstrations.
 
-- کد backend/frontend
-- اسکریپت‌ها (`scripts`, `tools`)
-- تنظیمات نمونه (`.env.example`, `frontend/.env.local.example`)
-- `README.md`, `LICENSE`, `SECURITY.md`
-- این سند: `Docs/README.md`
+## 10) Documentation Ownership
 
-### فایل‌هایی که نباید Push شوند
-
-- env واقعی (`.env`, `frontend/.env.local`)
-- دیتابیس‌های محلی (`*.db`, `*.sqlite*`)
-- storage runtime (`app/storage`, `test_storage`, `e2e_storage`, `perf_storage`)
-- `frontend/node_modules`, `frontend/.next`
-- مدل‌های وزن‌دار محلی (GGUF/safetensors) و هر فایل حجیم محرمانه
-
-## 14) عیب‌یابی سریع
-
-### فرانت بالا می‌آید ولی دیتا ندارد
-
-- `INVOICEMIND_API_BASE_URL` را بررسی کنید
-- backend باید روی `:8000` فعال باشد
-- endpoint `GET /health` پاسخ `ok` بدهد
-
-### خطای احراز هویت در UI
-
-- مقدار `INVOICEMIND_API_USERNAME` و `INVOICEMIND_API_PASSWORD` در `frontend/.env.local`
-- endpoint `POST /v1/auth/token` را مستقیم تست کنید
-
-### خطای migration
-
-- `python scripts/migrate.py` را مجدد اجرا کنید
-- مسیر `INVOICEMIND_DB_URL` معتبر باشد
-
-### مصرف RAM/VRAM بالا در مدل
-
-- quantization سبک‌تر انتخاب کنید (`q4`)
-- مدل کوچک‌تر از `models.yaml` فعال کنید
-- اجرای heavy model را به batch/offline محدود کنید
-
-## 15) استاندارد عملیاتی پروژه
-
-- نام رسمی پروژه در تمام اسناد و تنظیمات: `InvoiceMind`
-- تغییرات نسخه‌های policy/prompt/template/model/routing باید همزمان در config و env هماهنگ شوند
-- قبل از انتشار، تست‌های backend/frontend و کنترل audit الزامی است
-
----
-
-اگر نیاز به توسعه قابلیت جدید دارید، همین فایل باید به‌روز شود تا مستندات پروژه تک‌منبعه و سازگار باقی بماند.
+- Keep this file updated as the architecture and runtime behavior evolve.
+- Treat this file as the canonical technical guide for contributors and reviewers.
